@@ -596,6 +596,44 @@
             }
             checkbox.addEventListener("change", skontrolujTlacitko);
 
+            let vsetciLudia = Array.from(document.querySelectorAll(".karta-osoby")).map(function(karta) {
+                let img = karta.querySelector("img");
+                return {
+                    meno: img ? img.alt : karta.innerText,
+                    dom: karta.closest("div[id]").id
+                };
+            });
+            let vsetkyDomy = vsetciLudia.map(function(o) { return o.dom; })
+                .filter(function(dom, i, pole) { return pole.indexOf(dom) === i; });
+
+            // Kandidat je povoleny len ak po jeho vylosovani plati pre kazdy dom:
+            // pocet este nelosujucich ludi z domu <= pocet este nevylosovanych ludi mimo domu.
+            // Vdaka tomu losovanie vzdy dojde do konca.
+            function najdiKandidatov(data, mojaOsoba, mojDom) {
+                let losovali = data.losovali || {};
+                let vylosovani = data.vylosovani || {};
+
+                let zostavajuciLosujuci = vsetciLudia.filter(function(o) {
+                    return !losovali[o.meno] && o.meno !== mojaOsoba;
+                });
+
+                return vsetciLudia.filter(function(kandidat) {
+                    if (vylosovani[kandidat.meno] || kandidat.dom === mojDom) return false;
+
+                    let zostavajuciVybery = vsetciLudia.filter(function(o) {
+                        return !vylosovani[o.meno] && o.meno !== kandidat.meno;
+                    });
+
+                    if (zostavajuciLosujuci.length > zostavajuciVybery.length) return false;
+
+                    return vsetkyDomy.every(function(dom) {
+                        let losujuciVDome = zostavajuciLosujuci.filter(function(o) { return o.dom === dom; }).length;
+                        let vyberyMimoDomu = zostavajuciVybery.filter(function(o) { return o.dom !== dom; }).length;
+                        return losujuciVDome <= vyberyMimoDomu;
+                    });
+                }).map(function(o) { return o.meno; });
+            }
+
             losovatBtn.addEventListener("click", function() {
                 uzLosovane = true;
                 losovatBtn.disabled = true;
@@ -608,28 +646,26 @@
 
                 db.ref("secretSanta").once("value", function(snapshot) {
                     let data = snapshot.val() || {};
-                    let vylosovaniLudia = data.vylosovani || {};
+                    let mozniKandidati = najdiKandidatov(data, mojaOsoba, domOsoby.id);
 
-                    let VsetkyKarty = document.querySelectorAll(".karta-osoby");
-                    let mozniKandidati = [];
+                    if (mozniKandidati.length === 0) {
+                        alert("Nikto ti nezostal na vylosovanie. Obnov stránku a skús to znova.");
+                        uzLosovane = false;
+                        checkbox.disabled = false;
+                        skontrolujTlacitko();
+                        return;
+                    }
 
-                    VsetkyKarty.forEach(function(karta){
-                        let img = karta.querySelector("img");
-                        let menoKarty = img ? img.alt : karta.innerText;
-                        let jeZTohoIstéhoDomu = karta.closest("#" + domOsoby.id);
-                        let uzBolVylosovany = vylosovaniLudia[menoKarty];
-
-                        if (!jeZTohoIstéhoDomu && !uzBolVylosovany) {
-                            mozniKandidati.push(menoKarty);
-                        }
-                    });
+                    let animacnaMena = vsetciLudia.filter(function(o) {
+                        return o.dom !== domOsoby.id;
+                    }).map(function(o) { return o.meno; });
 
                     document.getElementById("losovacie-okno").style.display = "flex";
                     let slotDisplay = document.getElementById("vylosovane-meno");
                     let counter = 0;
 
                     let interval = setInterval(function() {
-                        let nahodneMeno = mozniKandidati[Math.floor(Math.random() * mozniKandidati.length)];
+                        let nahodneMeno = animacnaMena[Math.floor(Math.random() * animacnaMena.length)];
                         
                         slotDisplay.classList.remove("animacia-slotu");
                         void slotDisplay.offsetWidth; 
@@ -639,15 +675,40 @@
                         counter++;
                         if (counter > 20) {
                             clearInterval(interval);
-                            let finalnyVitaz = mozniKandidati[Math.floor(Math.random() * mozniKandidati.length)];
-                            slotDisplay.innerText = finalnyVitaz;
+                            let finalnyVitaz = null;
 
-                            db.ref("secretSanta/losovali/" + mojaOsoba).set(true);
-                            db.ref("secretSanta/vylosovani/" + finalnyVitaz).set(true);
+                            db.ref("secretSanta").transaction(function(aktualne) {
+                                let data = aktualne || {};
+                                finalnyVitaz = null;
 
-                            setTimeout(function(){
-                                document.getElementById("zatvorit-btn").style.display = "block";
-                            }, 1000);
+                                if ((data.losovali || {})[mojaOsoba]) return;
+
+                                let kandidati = najdiKandidatov(data, mojaOsoba, domOsoby.id);
+                                if (kandidati.length === 0) return;
+
+                                finalnyVitaz = kandidati[Math.floor(Math.random() * kandidati.length)];
+
+                                data.losovali = data.losovali || {};
+                                data.vylosovani = data.vylosovani || {};
+                                data.losovali[mojaOsoba] = true;
+                                data.vylosovani[finalnyVitaz] = true;
+                                return data;
+                            }, function(chyba, potvrdene) {
+                                if (chyba || !potvrdene || !finalnyVitaz) {
+                                    alert("Losovanie sa nepodarilo. Obnov stránku a skús to znova.");
+                                    document.getElementById("losovacie-okno").style.display = "none";
+                                    uzLosovane = false;
+                                    checkbox.disabled = false;
+                                    skontrolujTlacitko();
+                                    return;
+                                }
+
+                                slotDisplay.innerText = finalnyVitaz;
+
+                                setTimeout(function(){
+                                    document.getElementById("zatvorit-btn").style.display = "block";
+                                }, 1000);
+                            });
                         }
                     }, 100);
                 });
