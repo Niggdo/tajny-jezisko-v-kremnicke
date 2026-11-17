@@ -6,20 +6,150 @@
         <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
         <style>
-            #hlavna-stranka {display: none;}
-
-            .karta-osoby {
-                background-color: #f0f0f0;
-                padding: 10px;
-                margin: 5px 0;
-                border-radius: 5px;
-                cursor: pointer;
+            #hlavna-stranka {
+                display: none;
+                cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='62' height='62' style='font-size:30px'><text y='30'>🎅</text></svg>") 16 16, auto;
             }
 
+            #hKorec, #hKorecjr, #hStracina, #hDizin {
+            position: relative;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid #21b844;
+            border-radius: 25px;
+            padding: 30px 20px 20px 20px;
+            margin:  32px auto;
+            width: fit-content;
+            max-width: 100%;
+            box-sizing: border-box; 
+            padding-bottom: 30px;
+            transition: box-shadow 0.2s ease, background-color 0.3s ease;
+            }
+
+
+            #hKorec h2, #hKorecjr h2, #hStracina h2, #hDizin h2 {
+            position: absolute;
+            top: -15px;
+            left: 30px;
+            background-color: #240707;
+            border-radius: 10px;
+            padding: 0 10px;
+            font-size: 19px;
+            color: #21b844;
+            margin: 0;
+            width: auto !important;
+            transition: box-shadow 0.2s ease, background-color 0.3s ease;
+            }
+
+            #hKorec {
+            border: 2px solid #e4e14f60;
+            }
+            #hKorec h2 {
+            color: #e4e14f60;
+            }
+            #hKorec:hover {
+                background-color: #e4e14f46;
+                box-shadow: 0 0 200px #e4e14f8e;
+            }
+        
+            #hKorecjr {
+             border: 2px solid #35a01460;   
+            }
+            #hKorecjr h2 {
+              color: #35a01460;  
+            }
+            #hKorecjr:hover {
+                background-color: #2969166e;
+                box-shadow: 0 0 200px #2969168e;
+            }
+
+            #hStracina {
+             border: 2px solid #4f7ee460;   
+            }
+            #hStracina h2 {
+                color: #4f7ee460;
+            }
+            #hStracina:hover{
+               background-color: #578cff46;
+                box-shadow: 0 0 200px #578cff8e; 
+            }
+
+            #hDizin {
+             border: 2px solid #dd6fe760;   
+            }
+            #hDizin h2 {
+                color: #dd6fe760;
+            }
+            #hDizin:hover{
+               background-color: #dd6fe746;
+                box-shadow: 0 0 200px #dd6fe78e; 
+            }
+
+            @font-face {
+                font-family: 'VianocnyFont1';
+                src: url('fonts/The Perfect Christmas.ttf') format('truetype');
+            }
+
+
+            @keyframes wiggle {
+                0% { transform: scale(1) rotate(0deg);}
+                25% { transform: scale(1) rotate(-5deg);}
+                50% { transform: scale(1.1) rotate(5deg);}
+                75% { transform: scale(1) rotate(-3deg);}
+                100% { transform: scale(1) rotate(0deg);}
+            }
+
+            .karta-osoby {
+                background-color: rgba(100, 100, 100, 0.068);
+                padding: 1px;
+                border-radius: 20px;
+                cursor: pointer;
+                display: inline-flex; 
+                align-items: center;
+                justify-content: center;
+                box-sizing: border-box;
+                margin: 0 0px;
+                scale: (1);
+                transition: transform 0.2s ease; margin: 0.2s ease; scale: 0.2s ease;
+            }
+
+            .karta-osoby img {
+                height:  250px;
+                width: auto;
+                display: block;
+                border-radius: 20px;
+            }
+
+            .karta-osoby:hover {
+                animation: wiggle 1s ease-in-out infinite;
+                box-shadow: 0 0 50px #adadad80; 
+            }
+
+            .karta-scale{
+                display: inline-flex;
+                transform: scale(1);
+                margin: 0 0px;
+                vertical-align: middle;
+                transition: transform 0.15s ease, margin 0.3s ease;
+                transform-origin: center;
+            }         
+            
+            .karta-scale:hover {
+                transform: scale(1.2);
+                margin: 0 25px;
+            }
+
+
             .karta-osoby.vybrany {
-                background-color: #d4edda;
-                color: #155724;
+                background-color: #13ff4a59;
+                color: #21b844;
                 border: 2px solid #28a745;
+                box-shadow: 0 0 50px #43be60;
+                transform: scale(1.2);
+                margin: 0 25px;
             }
 
             #losovacie-okno {
@@ -27,17 +157,31 @@
                 position: fixed;
                 top: 20%; left: 25%;
                 width: 50%; height: 50%;
-                background-color: rgba(0, 0, 0, 0.85);
+                background-color: rgba(31, 31, 31, 0.9);
+                backdrop-filter: blur(10px);
                 justify-content: center;
                 align-items: center;
+                border-radius: 40px;
+                box-shadow: 0 0 100px #ffffff5b;
             }
 
             .losovanie-obsah {
-                color: #FFB8BF;
+                color: #ffb8bf;
                 padding: 30px;
                 border-radius: 10px;
                 text-align: center;
             }
+            
+            #glowwrap {
+                 -webkit-animation: glow 3s ease-in-out infinite alternate;
+            }
+            @-webkit-keyframes glow {
+                from{
+                    text-shadow: 0 0 0px #ff4d6298, 0 0 30px #ff4d6298, 0 0 50px #ff4d6298;
+                }
+                to { text-shadow: 0 0 10px #ff4d6298, 0 0 50px #ff4d6298, 0 0 100px #ff4d6298;
+            }
+        }
 
             #vylosovane-meno {
                 font-size: 100px;
@@ -75,20 +219,225 @@
                 animation: slotSkok 0.08s ease-in-out;
             }
 
-             @media (max-width: 2000px) {
-                #losovacie-okno {
-                    width: 90%; left: 5%; top: 10%;
-                }
-                #vylosovane-meno {
-                    font-size: 100px;
-                }
+            #final-page {
+                text-shadow: 0 0 50px #ff4d6298;
             }
+            #final-page:hover {
+                transform: scale(1.1);
+            }
+
+            .pismenko {
+            display: inline-block;
+            transform: scale(1);
+            margin: 0 0px;
+            vertical-align: middle;
+            transition: transform 0.1s ease, margin 0.3s ease;
+            cursor: default;
+            transform-origin: center;
+        }
+
+        .pismenko.hovered {
+            transform: scale(1.8); 
+            margin: 0 15px;
+        }
+
+        .pismenko.neighbor {
+            transform: scale(1.4);
+            margin: 0 5px;
+        }
+
+        #label {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        #potvrdenie {
+            transform: scale(2);
+            cursor: pointer;
+            margin: 0 5px;
+        }
+
+        #losovat {
+            font-size: 50px;
+            font-family: VianocnyFont1;
+            font-weight: bold;
+            letter-spacing: 2px;
+            padding: 15px 20px;
+            border: none;
+            cursor: pointer;
+            background-color: #b41a2c;
+            color: #e7e7e7;
+            border-radius: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        #losovat:not(:disabled):hover {
+            transform: scale(1.3);
+            box-shadow: 0 0 50px #b41a2c;
+        }
+
+        #losovat:disabled {
+            background-color: #63474be3;
+            color: #929292;
+            cursor: not-allowed;
+        }
+
+        .hviezda {
+            text-align: center;
+            margin-bottom: 20px;
+            margin: auto;
+        }
+        .hviezda img {
+            width: 300px;
+            filter: drop-shadow(0px -10px 90px #ffd700);
+            transition: filter 0.4s ease, transform 0.5s ease;
+        }
+        .hviezda img:hover{
+            filter: drop-shadow(0px 0px 60px #ffd700);
+            transform: scale(1.02);
+        }
+
+        .potvrdeniediv {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 25px;
+        }
+        .potvrdeniediv label {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-align: right;
+            font-size: 16px;
+            line-height: 1.3;
+            cursor: pointer;
+        }
+
+        @font-face {
+            font-family: "Madetommy";
+            src: url(fonts/MADE\ TOMMY.otf) format(truetype);
+        }
+
+        @font-face {
+            font-family: "Nieco";
+            src: url(fonts/MAGIMT_.ttf) format(truetype);
+        }
+
+        #overenie {
+                position: fixed;
+                top: 50%; left: 50%;
+                height: 50%;
+                transform: translate(-50%, -50%);
+                background-color: rgba(31, 31, 31, 0.9);
+            border-radius: 40px;
+            box-shadow: 0 0 100px #ffffff6e;
+            align-items: center;
+            text-align: center;
+            justify-content: center;
+            margin: auto;
+            width: 80%; height: 80%;
+            max-width: 1500px;
+            padding: 30px;
+            box-sizing: border-box;
+            cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='62' height='62' style='font-size:30px'><text y='30'>❄️</text></svg>") 16 16, auto;
+}
+
+@keyframes plynulyPohybJednosmerny {
+    0% {
+        background-position: 200% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.fx-spotlight {
+    position: relative;
+    display: inline-block;
+    color: rgba(255, 255, 255, 0.25);
+    font-family: Madetommy;
+    font-size: 300%;
+    letter-spacing: 1px;
+    background-image: radial-gradient(
+        circle 90px at center,
+        #ffffff 0%,
+        rgba(255, 255, 255, 0.25) 100%
+    );
+    background-size: 200% 100%;
+    background-repeat: repeat;
+    
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    
+    animation: plynulyPohybJednosmerny 3s linear infinite;
+}
+#vyber-odpovede {
+    font-size: 20px;
+    padding: 12px 20px;
+    border-radius: 20px;
+    background-color: rgba(255, 255, 255, 0.08);
+    color: #929292;
+    border: 2px solid rgb(156, 156, 156);
+    cursor: pointer;
+    font-family: Madetommy;
+    transition: transform 0.3s ease, box-shadow 0.2s ease ;
+}
+#vyber-odpovede:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 50px #ffffff34;
+}
+
+#vyber-odpovede option {
+    background-color: #303030da;
+    color: #cacaca;
+}
+
+#over {
+    transition: transform 0.3s ease, box-shadow 0.6s ease;
+}
+#over:hover {
+    transform: scale(1.5);
+    text-shadow: 0 0 40px #ffffff93;
+}
+
+#chyba{
+    font-family: Madetommy;
+    font-size: 20px;
+    text-shadow: 0 0 20px #ff2d2d;
+}
+
+@media (max-width: 1080px) {
+    #losovacie-okno {
+        width: 90%;
+        left: 5%;
+        top: 20%;
+    }
+    #vyber-odpovede {
+        font-size: 30px;
+    }
+    #label {
+        font-size: 100px;
+    }
+    #potvrdenie {
+        transform: scale(2.5);
+    }
+    #losovat {
+        font-size: 70px;
+    }
+    #zatvorit-btn {
+        font-size: 60px;
+    }
+}
         </style>
     </head>
-    <body>
+    <body style="background-color: #240707;">
         <div id="overenie">
-            <h3>Overovacia otázka, či sem patríš :D</h3>
-            <h1>Koľko má noha stoličiek?</h1>
+            <h3 id="over" style="font-family: Madetommy; color: #aaaaaa; ">Overovacia otázka, či sem patríš :D</h3>
+            <h1 class="fx-spotlight">Koľko má noha stoličiek?</h1> <br> <br>
             <select id="vyber-odpovede" autocomplete="off">
                 <option value="">Vyber správnu odpoveď</option>
                 <option value="zle"; onclick="alert('Skús znova!')">Je invalid</option>
@@ -100,67 +449,71 @@
                 <option value="zle2"; onclick="alert('Smola XD')">Nebaví ma to</option>
                 <option value="spravne">Žiadnu</option>
             </select>
-            <p id="chyba" style="color: red;"></p>
+            <p id="chyba" style="color: rgb(255, 146, 146);"></p>
         </div>
 
         <div id="hlavna-stranka">
-            <h3>Vyber si, kto si:</h3>
+            <div class="hviezda"><img src="fotky/hviezda.png"></div>
 
             <div id="hKorec">
-                <h2>House of Korec</h2>
-                <div class="karta-osoby">Dedo</div>
-                <div class="karta-osoby">Stará mama</div>
+                <h2>Dom Korca</h2>
+                <div class="karta-scale"><div class="karta-osoby"><img src="fotky/dedo.png" alt="Dedo"></div></div>
+                <div class="karta-scale"><div class="karta-osoby"><img src="fotky/staramama.png" alt="Stará mama"></div></div>
             </div>
 
             <br>
 
             <div id="hKorecjr">
-                <h2>House of Korec jr.</h2>
-                <div class="karta-osoby">Roman</div>
-                <div class="karta-osoby">Natálka</div>
-                <div class="karta-osoby">Maťka</div>
-                <div class="karta-osoby">Jakub</div>
+                <h2>Dom Korca jr.</h2>
+                <div class="karta-scale"><div class="karta-osoby"><img src="fotky/roman.png" alt="Roman"></div></div>
+                <div class="karta-scale"><div class="karta-osoby"><img src="fotky/natalka.png" alt="Natálka"></div></div>
+                <div class="karta-scale"><div class="karta-osoby"><img src="fotky/matka.png" alt="Maťka"></div></div>
+                <div class="karta-scale"><div class="karta-osoby"><img src="fotky/jakub.png" alt="Jakub"></div></div>
             </div>
 
             <br>
 
             <div id="hStracina">
-                <h2>House of Stračina</h2>
-                <div class="karta-osoby">Rasťo</div>
-                <div class="karta-osoby">Bejka</div>
-                <div class="karta-osoby">Samko</div>
-                <div class="karta-osoby">Marek</div>
-                <div class="karta-osoby">Nika</div>
-                <div class="karta-osoby">Kika</div>
-                <div class="karta-osoby">Mirko</div>
+                <h2>Dom Stračinu</h2>
+                <div class="karta-scale"><div class="karta-osoby"><img src="fotky/rasto.png" alt="Rasťo"></div></div> 
+                <div class="karta-scale"><div class="karta-osoby"><img src="fotky/bejka.png" alt="Bejka"></div></div> 
+                <div class="karta-scale"><div class="karta-osoby"><img src="fotky/samko.png" alt="Samko"></div></div> 
+                <div class="karta-scale"><div class="karta-osoby"><img src="fotky/marek.png" alt="Marek"></div></div> 
+                <div class="karta-scale"><div class="karta-osoby"><img src="fotky/nika.png" alt="Nika"></div></div> 
+                <div class="karta-scale"><div class="karta-osoby"><img src="fotky/kika.png" alt="Kika"></div></div> 
+                <div class="karta-scale"><div class="karta-osoby"><img src="fotky/mirko.png" alt="Mirko"></div></div> 
             </div>
 
             <br>
 
             <div id="hDizin">
-                <h2>House of Dižin</h2>
-                <div class="karta-osoby">Sisa</div>
-                <div class="karta-osoby">Braňo</div>
-                <div class="karta-osoby">Adam</div>
-                <div class="karta-osoby">Dominika</div>
+                <h2>Dom Dižinovcov</h2>
+                <div class="karta-scale"><div class="karta-osoby"><img src="fotky/sisa.png" alt="Sisa"></div></div>
+                <div class="karta-scale"><div class="karta-osoby"><img src="fotky/brano.png" alt="Braňo"></div></div>
+                <div class="karta-scale"><div class="karta-osoby"><img src="fotky/adam.png" alt="Adam"></div></div>
+                <div class="karta-scale"><div class="karta-osoby"><img src="fotky/dominika.png" alt="Dominika"></div></div>
             </div>
 
             <br>
 
-            <div style="margin-top: 20px;">
+            <div class="potvrdeniediv" style="margin-top: 20px; color: #adadad;">
                 <label>
-                    <input type="checkbox" id="potvrdenie" autocomplete="off"> Potvrdzujem, že som to ja. Druhýkrát nemôžem byť vybraný a strácam právo druhýkrát losovať!
+                    <span>Potvrdzujem, že som to ja.<br>Druhýkrát nemôžem byť vybraný<br>a strácam právo druhýkrát losovať!<br>Zapamätám si svojho vylosovaného druha.</span>
+                    <input type="checkbox" id="potvrdenie" autocomplete="off"> 
                 </label>
-                <br><br>
                 <button id="losovat" autocomplete="off" disabled>LOSOVAŤ</button>
             </div>
+            <br> <br> 
+            <div></div>
         </div>
 
         <div id="losovacie-okno">
             <button id="zatvorit-btn">x</button>
             <div class="losovanie-obsah" style="position: relative;">
                 <h2>Tvoja osoba je:</h2>
+                <div id="glowwrap">
                 <div id="vylosovane-meno"></div>
+                </div>
             </div>
         </div>
 
@@ -201,10 +554,15 @@
 
                 let VsetkyKarty = document.querySelectorAll(".karta-osoby");
                 VsetkyKarty.forEach(function(karta) {
-                    let menoOsoby = karta.innerText;
+                    let img = karta.querySelector("img");
+                    let menoOsoby = img ? img.alt : karta.innerText;
+
                     if (uzLosovaliOsoby[menoOsoby]) {
                         karta.style.opacity = "0.3";
                         karta.style.pointerEvents = "none";
+                        if (img) {
+                            img.style.filter = "grayscale(100%)";
+                        }
                     }
                 });
             });
@@ -218,7 +576,8 @@
                     });
                     this.classList.add("vybrany");
 
-                    zvolenaOsoba = this.innerText;
+                    let img = this.querySelector("img");
+                    zvolenaOsoba = img ? img.alt : this.innerText;
                     console.log("Vybral som sa: " + zvolenaOsoba);
 
                     skontrolujTlacitko();
@@ -244,7 +603,8 @@
 
                 let vybranaKarta = document.querySelector(".karta-osoby.vybrany");
                 let domOsoby = vybranaKarta.closest("div[id]");
-                let mojaOsoba = vybranaKarta.innerText;
+                let imgVybranej = vybranaKarta.querySelector("img");
+                let mojaOsoba = imgVybranej ? imgVybranej.alt : vybranaKarta.innerText;
 
                 db.ref("secretSanta").once("value", function(snapshot) {
                     let data = snapshot.val() || {};
@@ -254,7 +614,8 @@
                     let mozniKandidati = [];
 
                     VsetkyKarty.forEach(function(karta){
-                        let menoKarty = karta.innerText;
+                        let img = karta.querySelector("img");
+                        let menoKarty = img ? img.alt : karta.innerText;
                         let jeZTohoIstéhoDomu = karta.closest("#" + domOsoby.id);
                         let uzBolVylosovany = vylosovaniLudia[menoKarty];
 
@@ -292,13 +653,44 @@
                 });
             });
 
-            document.getElementById("zatvorit-btn").addEventListener("click", function (){
-                document.body.innerHTML = `
-                    <div style="display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #262626; font-family: sans-serif; text-align: center;">
-                        <h1 style="color: #FF7384; font-size: 40px;">Hotovo!<br>Vidíme sa na Vianoce.🎄</h1>
-                    </div>
-                `;
-                confetti({
+             document.getElementById("zatvorit-btn").addEventListener("click", function (){
+             let text1 = "Hotovo!";
+             let text2 = "Vidíme sa na Vianoce.";
+             let tajnyLink = "https://eu.zonerama.com/Esko/Album/14802482?secret=3Bmch5CiTN84q89BVSE9360FV";
+
+             let html1 = Array.from(text1).map(c => `<span class="pismenko">${c}</span>`).join('');
+             let html2 = Array.from(text2).map(c => c === ' ' ? '&nbsp;' : `<span class="pismenko">${c}</span>`).join('');
+             let htmlStromcek = `<a href="${tajnyLink}" target="_blank" class="pismenko" style="text-decoration: none; cursor: pointer;">🎄</a>`;
+
+             document.body.innerHTML = `
+                 <div id="final-page" style="display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #262626; text-align: center; flex-direction: column;">
+                     <h1 style="color: #FF7384; font-size: 35px">
+                     ${html1}<br>
+                     <span style="font-size: 50px">${html2}${htmlStromcek}</span>
+                     </h1>
+                 </div>
+                 `;
+
+             let vsetkyPismenka = document.querySelectorAll(".pismenko");
+
+             vsetkyPismenka.forEach(function(pismenko, index) {
+                 pismenko.addEventListener("mouseenter", function() {
+                     this.classList.add("hovered");
+ 
+                    if (index > 0) {
+                     vsetkyPismenka[index - 1].classList.add("neighbor");
+                    }
+                     if (index < vsetkyPismenka.length - 1) {
+                     vsetkyPismenka[index + 1].classList.add("neighbor");
+                     }
+                 });
+
+                pismenko.addEventListener("mouseleave", function() {
+                     vsetkyPismenka.forEach(p => p.classList.remove("hovered", "neighbor"));
+                 });
+              });
+
+                 confetti({
                     particleCount: 100,
                     spread: 200,
                     origin: { y: 0.6 }
