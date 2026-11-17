@@ -210,9 +210,9 @@
             }
 
             @keyframes slotSkok {
-                0% { transform: translateY(-30px); opacity: 0; }
+                0% { transform: translateY(-40px); opacity: 0; }
                 50% { transform: translateY(0); opacity: 1; }
-                100% { transform: translateY(30px); opacity: 0; }
+                100% { transform: translateY(40px); opacity: 0; }
             }
 
             .animacia-slotu {
@@ -221,11 +221,10 @@
 
             #final-page {
                 text-shadow: 0 0 50px #ff4d6298;
-            }
-            #final-page:hover {
+                cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='62' height='62' style='font-size:30px'><text y='30'>🎄</text></svg>") 16 16, auto;
                 transform: scale(1.1);
             }
-
+            
             .pismenko {
             display: inline-block;
             transform: scale(1);
@@ -257,7 +256,12 @@
         #potvrdenie {
             transform: scale(2);
             cursor: pointer;
-            margin: 0 5px;
+            margin: 0 15px;
+            transition: transform 0.15s ease, box-shadow 0.2s ease;
+        }
+        #potvrdenie:hover{
+            transform: scale(2.1);
+            box-shadow: 0 0 25px #ffffffbd;
         }
 
         #losovat {
@@ -410,6 +414,28 @@
     text-shadow: 0 0 20px #ff2d2d;
 }
 
+.mobil {
+    display: none;
+}
+
+#stolicka {
+    box-sizing: border-box;
+    display: inline-block;
+    margin: -25% auto 0 auto; 
+    transform: scale(0.15);
+    border-radius: 50px;
+    opacity: 0.05;
+    transition: transform 2s ease, opacity 3s ease, margin-top 2s ease;
+}
+
+#stolicka:hover {
+    transform: scale(0.7);
+    opacity: 1;
+    margin-top: -39%;
+    box-shadow: 0 0 100px #cecece59;
+}
+
+
 @media (max-width: 1080px) {
     #losovacie-okno {
         width: 90%;
@@ -422,21 +448,68 @@
     #label {
         font-size: 100px;
     }
+    .labelmobil {
+        font-size: 22px;
+    }
     #potvrdenie {
-        transform: scale(2.5);
+        transform: scale(3.5);
+        margin: 0 25px;
     }
     #losovat {
-        font-size: 70px;
+        font-size: 130px;
     }
     #zatvorit-btn {
-        font-size: 60px;
+        font-size: 70px;
+    }
+    #vyber-odpovede {
+        font-size:  40px;
+    }
+    .mobil {
+        display: inline;
+    }
+    .potvrdeniediv {
+        flex-direction: column;
+    }
+    .mobilminus {
+        display: none;
+    }
+    #chyba {
+        transform: scale(1.3);
+    }
+    .hviezda img {
+            width: 500px;
+        }
+        .karta-osoby img {
+                height:  450px;
+                width: auto;
+            }
+    .karta-scale:hover, .karta-osoby.vybrany {
+        transform: scale(1.15);
+        margin: 35px 25px !important;
+    }
+    #hKorec, #hKorecjr, #hStracina, #hDizin {
+        width: 85% !important;
+        margin-left: auto !important;
+        margin-right: auto !important;
+        box-sizing: border-box;
+    }
+    #hKorec h2, #hKorecjr h2, #hStracina h2, #hDizin h2{
+        left: 20px !important;
+    }
+    #vylosovane-meno {
+                font-size: 160px;}
+    .mobillos {
+        font-size: 40px;
+    }
+    #stolicka {
+        margin-left: -33% !important;
     }
 }
         </style>
     </head>
     <body style="background-color: #240707;">
         <div id="overenie">
-            <h3 id="over" style="font-family: Madetommy; color: #aaaaaa; ">Overovacia otázka, či sem patríš :D</h3>
+           <br> <h3 id="over" style="font-family: Madetommy; color: #aaaaaa; ">Overovacia otázka, či sem patríš :D</h3> <br><br><br><br><br><br> <br class="mobil"><br class="mobil"><br class="mobil"><br class="mobil"><br class="mobil"><br class="mobil"><br class="mobil">
             <h1 class="fx-spotlight">Koľko má noha stoličiek?</h1> <br> <br>
             <select id="vyber-odpovede" autocomplete="off">
                 <option value="">Vyber správnu odpoveď</option>
@@ -449,7 +522,10 @@
                 <option value="zle2"; onclick="alert('Smola XD')">Nebaví ma to</option>
                 <option value="spravne">Žiadnu</option>
             </select>
-            <p id="chyba" style="color: rgb(255, 146, 146);"></p>
+            <br class="mobil"><br class="mobil"><br class="mobil"><p id="chyba" style="color: rgb(255, 146, 146);"></p>
+            <div style="text-align: center; width: 100%;">
+    <img src="fotky/nohastoliciek.jpg" id="stolicka">
+</div>
         </div>
 
         <div id="hlavna-stranka">
@@ -476,12 +552,12 @@
             <div id="hStracina">
                 <h2>Dom Stračinu</h2>
                 <div class="karta-scale"><div class="karta-osoby"><img src="fotky/rasto.png" alt="Rasťo"></div></div> 
-                <div class="karta-scale"><div class="karta-osoby"><img src="fotky/bejka.png" alt="Bejka"></div></div> 
-                <div class="karta-scale"><div class="karta-osoby"><img src="fotky/samko.png" alt="Samko"></div></div> 
+                <div class="karta-scale"><div class="karta-osoby"><img src="fotky/bejka.png" alt="Bejka"></div></div>  
                 <div class="karta-scale"><div class="karta-osoby"><img src="fotky/marek.png" alt="Marek"></div></div> 
                 <div class="karta-scale"><div class="karta-osoby"><img src="fotky/nika.png" alt="Nika"></div></div> 
                 <div class="karta-scale"><div class="karta-osoby"><img src="fotky/kika.png" alt="Kika"></div></div> 
                 <div class="karta-scale"><div class="karta-osoby"><img src="fotky/mirko.png" alt="Mirko"></div></div> 
+                <div class="karta-scale"><div class="karta-osoby"><img src="fotky/samko.png" alt="Samko"></div></div>
             </div>
 
             <br>
@@ -494,28 +570,96 @@
                 <div class="karta-scale"><div class="karta-osoby"><img src="fotky/dominika.png" alt="Dominika"></div></div>
             </div>
 
-            <br>
+            <br class="mobilminus">
 
             <div class="potvrdeniediv" style="margin-top: 20px; color: #adadad;">
                 <label>
-                    <span>Potvrdzujem, že som to ja.<br>Druhýkrát nemôžem byť vybraný<br>a strácam právo druhýkrát losovať!<br>Zapamätám si svojho vylosovaného druha.</span>
+                    <span  class="labelmobil">Potvrdzujem, že som to ja.<br class="mobilminus"> Druhýkrát nemôžem byť vybraný<br >a strácam právo druhýkrát losovať!<br class="mobilminus"> Zapamätám si svojho vylosovaného druha.</span>
                     <input type="checkbox" id="potvrdenie" autocomplete="off"> 
-                </label>
+                </label> <br class="mobil">
                 <button id="losovat" autocomplete="off" disabled>LOSOVAŤ</button>
             </div>
-            <br> <br> 
+            <br> <br> <br class="mobil"><br class="mobil"><br class="mobil">
             <div></div>
         </div>
 
         <div id="losovacie-okno">
             <button id="zatvorit-btn">x</button>
             <div class="losovanie-obsah" style="position: relative;">
-                <h2>Tvoja osoba je:</h2>
+                <h2 class="mobillos">Tvoja osoba je:</h2>
                 <div id="glowwrap">
                 <div id="vylosovane-meno"></div>
                 </div>
             </div>
         </div>
+
+        <script>
+            var zvuky = {};
+            ["hovervseobecny", "kartahover", "kartavyber", "losovathover", "pesnicka", "potvrdenie", "slotmachine", "vylosovanemeno", "spravne", "zle", "konfety"].forEach(function(nazov) {
+                let a = new Audio("sounds/" + nazov + ".mp3");
+                a.preload = "auto";
+                zvuky[nazov] = a;
+            });
+            zvuky.pesnicka.volume = Math.pow(10, -19 / 20);
+
+            let zaciatokZvuku = { spravne: 1 };
+
+            let audioKontext = null;
+            try {
+                if (location.protocol !== "file:") {
+                    let AC = window.AudioContext || window.webkitAudioContext;
+                    audioKontext = new AC();
+                    let zosilneniaDb = { hovervseobecny: 4, spravne: 5 };
+                    Object.keys(zosilneniaDb).forEach(function(nazov) {
+                        let zdroj = audioKontext.createMediaElementSource(zvuky[nazov]);
+                        let zosilnenie = audioKontext.createGain();
+                        zosilnenie.gain.value = Math.pow(10, zosilneniaDb[nazov] / 20);
+                        zdroj.connect(zosilnenie);
+                        zosilnenie.connect(audioKontext.destination);
+                    });
+                }
+            } catch (e) { audioKontext = null; }
+
+            function prehrajZvuk(nazov) {
+                let a = zvuky[nazov];
+                if (!a) return;
+                if (audioKontext && audioKontext.state === "suspended") audioKontext.resume();
+                try { a.currentTime = zaciatokZvuku[nazov] || 0; } catch (e) {}
+                let p = a.play();
+                if (p && p.catch) p.catch(function() {});
+            }
+
+            let poslednyHover = {};
+            function prehrajHover(nazov) {
+                let teraz = Date.now();
+                if (poslednyHover[nazov] && teraz - poslednyHover[nazov] < 150) return;
+                poslednyHover[nazov] = teraz;
+                prehrajZvuk(nazov);
+            }
+
+            document.addEventListener("mouseover", function(e) {
+                if (!e.target.closest) return;
+
+                let vseobecny = e.target.closest("#vyber-odpovede, #over, #stolicka, #zatvorit-btn, .hviezda img, #potvrdenie, .pismenko");
+                if (vseobecny && !vseobecny.contains(e.relatedTarget)) {
+                    prehrajHover("hovervseobecny");
+                }
+
+                let karta = e.target.closest(".karta-osoby");
+                if (karta && !karta.contains(e.relatedTarget)) {
+                    prehrajHover("kartahover");
+                }
+
+                let tlacidlo = e.target.closest("#losovat");
+                if (tlacidlo && !tlacidlo.disabled && !tlacidlo.contains(e.relatedTarget)) {
+                    prehrajHover("losovathover");
+                }
+            });
+
+            document.getElementById("potvrdenie").addEventListener("change", function() {
+                prehrajZvuk("potvrdenie");
+            });
+        </script>
 
         <script>
             const firebaseConfig = {
@@ -536,12 +680,16 @@
                 if (zvolenaHodnota === "spravne") {
                     document.getElementById("overenie").style.display = "none";
                     document.getElementById("hlavna-stranka").style.display = "block";
+                    prehrajZvuk("spravne");
+                    prehrajZvuk("pesnicka");
                 }
                 else if (zvolenaHodnota === "zle") {
                     document.getElementById("chyba").innerText = "Vyber znova inú odpoveď...";
+                    prehrajZvuk("zle");
                 }
                 else if (zvolenaHodnota === "zle2") {
                     document.getElementById("chyba").innerText = "Prečo? :(";
+                    prehrajZvuk("zle");
                 }
             });
 
@@ -575,6 +723,7 @@
                         k.classList.remove("vybrany");
                     });
                     this.classList.add("vybrany");
+                    prehrajZvuk("kartavyber");
 
                     let img = this.querySelector("img");
                     zvolenaOsoba = img ? img.alt : this.innerText;
@@ -661,6 +810,7 @@
                     }).map(function(o) { return o.meno; });
 
                     document.getElementById("losovacie-okno").style.display = "flex";
+                    prehrajZvuk("slotmachine");
                     let slotDisplay = document.getElementById("vylosovane-meno");
                     let counter = 0;
 
@@ -704,6 +854,7 @@
                                 }
 
                                 slotDisplay.innerText = finalnyVitaz;
+                                prehrajZvuk("vylosovanemeno");
 
                                 setTimeout(function(){
                                     document.getElementById("zatvorit-btn").style.display = "block";
@@ -724,7 +875,7 @@
              let htmlStromcek = `<a href="${tajnyLink}" target="_blank" class="pismenko" style="text-decoration: none; cursor: pointer;">🎄</a>`;
 
              document.body.innerHTML = `
-                 <div id="final-page" style="display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #262626; text-align: center; flex-direction: column;">
+                 <div id="final-page" style="display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #262626; text-align: center; flex-direction: column; ">
                      <h1 style="color: #FF7384; font-size: 35px">
                      ${html1}<br>
                      <span style="font-size: 50px">${html2}${htmlStromcek}</span>
@@ -751,6 +902,7 @@
                  });
               });
 
+                 prehrajZvuk("konfety");
                  confetti({
                     particleCount: 100,
                     spread: 200,
